@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import os
 
 app = Flask(__name__)
@@ -17,6 +17,13 @@ def home():
 def listar_alunos(): 
     return jsonify (alunos)
 
-if __name__ == "__main__":
- port = int(os.environ.get("PORT", 5000))
- app.run(host="0.0.0.0", port=port)
+@app.route("/alunos", methods=["POST"])
+def criar_aluno():
+    novo = request.json
+    novo['id'] = len(alunos) + 1
+    alunos.append(novo)
+    return jsonify(novo), 201
+
+if __name__ == '__main__':
+ app.run(debug=True)
+ 
